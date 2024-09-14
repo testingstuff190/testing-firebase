@@ -8,7 +8,7 @@ pipeline {
                     def apkUrl = 'https://raw.githubusercontent.com/testingstuff190/apk-test-2/main/com.afwsamples.testdpc_9.0.8-9008_minAPI21(nodpi)_apkmirror.com.apk'
                     def destination = "${WORKSPACE}/app/build/outputs/apk/efesFlavor/debug/com.afwsamples.testdpc_9.0.8-9008_minAPI21(nodpi)_apkmirror.com.apk"
 
-                    // Create directory if it doesn't exist
+                    // Create directory if it doesn't existt
                     sh """
                     mkdir -p "${WORKSPACE}/app/build/outputs/apk/efesFlavor/debug"
                     """
