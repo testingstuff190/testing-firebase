@@ -5,6 +5,11 @@ pipeline {
         distributionGroup = 'testers'
     }
     stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/testingstuff190/testing-firebase.git', credentialsId: 'github-token'
+            }
+        }
         stage('Publish') {
             steps {
                 script {
