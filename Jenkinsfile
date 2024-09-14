@@ -1,6 +1,9 @@
 pipeline {
     agent any
-
+    environment{
+        APK = "${WORKSPACE}/app/build/outputs/apk/efesFlavor/debug/com.afwsamples.testdpc_9.0.8-9008_minAPI21(nodpi)_apkmirror.com.apk"
+        distributionGroup = 'testers'
+    }
     stages {
         stage('Publish') {
             steps {
@@ -50,7 +53,7 @@ pipeline {
                         firebase projects:list --debug
 
                         # Distribute APK using Firebase CLI
-                        firebase appdistribution:distribute "${WORKSPACE}/app/build/outputs/apk/efesFlavor/debug/com.afwsamples.testdpc_9.0.8-9008_minAPI21(nodpi)_apkmirror.com.apk" --app ${FIREBASE_APP_ID}  --groups testers --debug
+                        firebase appdistribution:distribute ${APK} --app ${FIREBASE_APP_ID}  --groups ${distributionGroup} --debug
                         '''
                     }
                 }
