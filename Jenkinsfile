@@ -1,19 +1,18 @@
-@Library('my-library') _
+@Library('my-library@v1.6') _
 pipeline {
     agent any
     environment{
         APK = "${WORKSPACE}/app/build/outputs/apk/efesFlavor/debug/com.afwsamples.testdpc_9.0.8-9008_minAPI21(nodpi)_apkmirror.com.apk"
         distributionGroup = 'testers'
+        NVM_DIR = "${env.HOME}/.nvm"
+        NODE_PATH = "$NVM_DIR/versions/node/v22.8.0"
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/testingstuff190/testing-firebase.git', credentialsId: 'github-token'
-            }
-        }
+       
         stage('Publish') {
             steps {
                 script {
+                    env.PATH = "${NODE_PATH}/bin:${env.PATH}"
                     def apkUrl = 'https://raw.githubusercontent.com/testingstuff190/apk-test-2/main/com.afwsamples.testdpc_9.0.8-9008_minAPI21(nodpi)_apkmirror.com.apk'
                     def destination = "${WORKSPACE}/app/build/outputs/apk/efesFlavor/debug/com.afwsamples.testdpc_9.0.8-9008_minAPI21(nodpi)_apkmirror.com.apk"
 
@@ -28,24 +27,15 @@ pipeline {
                     """
                     
                     withCredentials([file(credentialsId: 'firebase-service-account-json', variable: 'GOOGLE_APPLICATION_CREDENTIALS'), string(credentialsId: 'FIREBASE_APP_ID', variable: 'FIREBASE_APP_ID')]){    
-                        // Install Firebase CLI
+                        myFunction.uploadAppToFirebase("myApp", APK, FIREBASE_APP_ID, "testers", false, "" )
                         sh '''
                         #!/bin/bash
 
                         # Check Firebase CLI version
                         firebase --version
 
-                        # Make sure the PATH is updated correctly
-                        export PATH="$PATH:$HOME/.nvm/versions/node/v18.20.4/bin"
-
-                        # Print Firebase App ID for debugging
-                        echo "Using Firebase App ID: ${FIREBASE_APP_ID}"
-
                         # List Firebase projects
                         firebase projects:list --debug
-
-                        # Distribute APK using Firebase CLI
-                        firebase appdistribution:distribute ${APK} --app ${FIREBASE_APP_ID}  --groups ${distributionGroup} --debug
                         '''
                     }
                 }
