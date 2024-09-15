@@ -32,19 +32,6 @@ pipeline {
                         sh '''
                         #!/bin/bash
                         export GOOGLE_APPLICATION_CREDENTIALS=${SERVICE_ACCOUNT_JSON}
-                        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-                        export NVM_DIR="$HOME/.nvm"
-                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-
-                        # Install and use Node.js 18
-                        nvm install 18
-                        nvm use 18
-
-                        # Verify Node.js version
-                        node -v
-
-                        # Install Firebase CLI using Node.js 18
-                        npm install -g firebase-tools
 
                         # Check Firebase CLI version
                         firebase --version
