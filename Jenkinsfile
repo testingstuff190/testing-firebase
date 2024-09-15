@@ -27,11 +27,10 @@ pipeline {
                     curl -L -o "${destination}" "${apkUrl}"
                     """
                     
-                    withCredentials([file(credentialsId: 'firebase-service-account-json', variable: 'SERVICE_ACCOUNT_JSON'), string(credentialsId: 'FIREBASE_APP_ID', variable: 'FIREBASE_APP_ID')]){    
+                    withCredentials([file(credentialsId: 'firebase-service-account-json', variable: 'GOOGLE_APPLICATION_CREDENTIALS'), string(credentialsId: 'FIREBASE_APP_ID', variable: 'FIREBASE_APP_ID')]){    
                         // Install Firebase CLI
                         sh '''
                         #!/bin/bash
-                        export GOOGLE_APPLICATION_CREDENTIALS=${SERVICE_ACCOUNT_JSON}
 
                         # Check Firebase CLI version
                         firebase --version
